@@ -25,7 +25,6 @@ class LinuxRouter(Node):
 
 class MyTopo( Topo ):
     def build( self ):
-        num_switch = 5
         number_host_per_switch_1 = 6
         number_host_per_switch_2 = 5
 
