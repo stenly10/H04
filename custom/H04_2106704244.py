@@ -10,6 +10,8 @@ topology enables one to pass in '--topo=mytopo' from the command line.
 
 from mininet.topo import Topo
 from mininet.node import Node
+from mininet.net import Mininet
+from mininet.cli import CLI
 
 class LinuxRouter(Node):
     "A Node with IP forwarding enabled."
@@ -74,4 +76,14 @@ class MyTopo( Topo ):
                     self.addHost(host_name, ip=ip_addr, defaultRoute=f'via {default_gateway_residen[:-3]}')
                     self.addLink(host_name, switch)
             
-topos = { 'mytopo': ( lambda: MyTopo() ) }
+# topos = { 'mytopo': ( lambda: MyTopo() ) }
+topo = MyTopo()
+net = Mininet(topo=topo)
+
+
+net['r1'].cmd("ip route add default via 192.168.244.122")
+net['r2'].cmd("ip route add default via 192.168.244.121")
+
+net.start()
+CLI(net)
+net.stop()
