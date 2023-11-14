@@ -37,10 +37,10 @@ class MyTopo( Topo ):
         router_asrama = self.addNode('Router Asrama', cls=LinuxRouter, ip=default_gateway_koas)
         router_rs = self.addNode('Router RS', cls=LinuxRouter, ip=default_gateway_spesialis)
 
-        switch_k = self.addSwitch('Switch_K')
-        switch_i = self.addSwitch('Switch_I')
-        switch_s = self.addSwitch('Switch_S')
-        switch_r = self.addSwitch('Switch_R')
+        switch_k = self.addSwitch('s1')
+        switch_i = self.addSwitch('s2')
+        switch_s = self.addSwitch('s3')
+        switch_r = self.addSwitch('s4')
 
         self.addLink(switch_k, router_rs, intfName2='router_asrama-eth1', params2={'ip':default_gateway_koas})
         self.addLink(switch_i, router_rs, intfName2='router_asrama-eth2', params2={'ip':default_gateway_internship})
@@ -48,7 +48,7 @@ class MyTopo( Topo ):
         self.addLink(switch_r, router_asrama, intfName2='router_rs-eth2', params2={'ip':default_gateway_residen})
         # self.addLink(router_asrama, router_rs)
 
-        for switch in ['Switch_K', 'Switch_I', 'Switch_S', 'Switch_R']:
+        for switch in ['s1', 's2', 's3', 's4']:
             if switch == 'Switch_K':
                 for j in range(number_host_per_switch_1):
                     host_name = f'K{j+1}'
