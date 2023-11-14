@@ -15,8 +15,8 @@ class LinuxRouter(Node):
         super(LinuxRouter, self).terminate()
 
 
-class MyTopo(Topo):
-    def build(self):
+class NetworkTopo(Topo):
+    def build(self, **_opts):
         # Add 2 routers in two different subnets
         r1 = self.addHost('r1', cls=LinuxRouter, ip='10.0.0.1/24')
         r2 = self.addHost('r2', cls=LinuxRouter, ip='10.1.0.1/24')
@@ -56,4 +56,20 @@ class MyTopo(Topo):
         self.addLink(d1, s1)
         self.addLink(d2, s2)
 
-topos = { 'mytopo': ( lambda: MyTopo() ) }
+
+def run():
+    topo = NetworkTopo()
+    net = Mininet(topo=topo)
+
+    # Add routing for reaching networks that aren't directly connected
+    info(net['r1'].cmd("ip route add 10.1.0.0/24 via 10.100.0.2 dev r1-eth2"))
+    info(net['r2'].cmd("ip route add 10.0.0.0/24 via 10.100.0.1 dev r2-eth2"))
+
+    net.start()
+    CLI(net)
+    net.stop()
+
+
+if __name__ == '__main__':
+    setLogLevel('info')
+    run()
