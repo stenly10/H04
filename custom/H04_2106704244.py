@@ -45,10 +45,10 @@ class MyTopo( Topo ):
         switch_s = self.addSwitch('s3')
         switch_r = self.addSwitch('s4')
 
-        self.addLink(switch_k, router_rs, intfName1 = 's1-eth1', intfName2='r0-eth1', params2={'ip':default_gateway_koas})
-        self.addLink(switch_i, router_rs, intfName1 = 's2-eth1', intfName2='r0-eth2', params2={'ip':default_gateway_internship})
-        self.addLink(switch_s, router_asrama, intfName1 = 's3-eth1', intfName2='r1-eth1', params2={'ip':default_gateway_spesialis})
-        self.addLink(switch_r, router_asrama, intfName1 = 's4-eth1', intfName2='r1-eth2', params2={'ip':default_gateway_residen})
+        self.addLink(switch_k, router_asrama, intfName1 = 's1-eth1', intfName2='r0-eth1', params2={'ip':default_gateway_koas})
+        self.addLink(switch_i, router_asrama, intfName1 = 's2-eth1', intfName2='r0-eth2', params2={'ip':default_gateway_internship})
+        self.addLink(switch_s, router_rs, intfName1 = 's3-eth1', intfName2='r1-eth1', params2={'ip':default_gateway_spesialis})
+        self.addLink(switch_r, router_rs, intfName1 = 's4-eth1', intfName2='r1-eth2', params2={'ip':default_gateway_residen})
         self.addLink(router_asrama, router_rs, intfName1 = 'r0-eth3', intfName2='r1-eth3', params1={'ip':asrama_rs}, params2={'ip':rs_asrama})
 
         for switch in ['s1', 's2', 's3', 's4']:
