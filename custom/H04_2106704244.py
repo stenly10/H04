@@ -36,7 +36,10 @@ class MyTopo( Topo ):
 
         router_asrama = self.addNode('Router Asrama', cls=LinuxRouter, ip=default_gateway_koas)
         router_rs = self.addNode('Router RS', cls=LinuxRouter, ip=default_gateway_spesialis)
-
+        
+        rs_asrama = '192.168.244.121/30'
+        asrama_rs = '192.168.244.122/30'
+        
         switch_k = self.addSwitch('s1')
         switch_i = self.addSwitch('s2')
         switch_s = self.addSwitch('s3')
@@ -46,7 +49,7 @@ class MyTopo( Topo ):
         self.addLink(switch_i, router_rs, intfName2='r0-eth2', params2={'ip':default_gateway_internship})
         self.addLink(switch_s, router_asrama, intfName2='r1-eth1', params2={'ip':default_gateway_spesialis})
         self.addLink(switch_r, router_asrama, intfName2='r1-eth2', params2={'ip':default_gateway_residen})
-        self.addLink(router_asrama, router_rs, intfName1 = 'r0-eth3', intfName2='r1-eth3')
+        self.addLink(router_asrama, router_rs, intfName1 = 'r0-eth3', intfName2='r1-eth3', params1={'ip':asrama_rs}, params2={'ip':rs_asrama})
 
         for switch in ['s1', 's2', 's3', 's4']:
             if switch == 'Switch_K':
