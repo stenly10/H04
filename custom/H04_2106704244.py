@@ -40,10 +40,10 @@ class MyTopo( Topo ):
         rs_asrama = '192.168.244.121/30'
         asrama_rs = '192.168.244.122/30'
         
-        switch_k = self.addSwitch('s1')
-        switch_i = self.addSwitch('s2')
-        switch_s = self.addSwitch('s3')
-        switch_r = self.addSwitch('s4')
+        switch_k = self.addSwitch('Switch Koas')
+        switch_i = self.addSwitch('Switch Internship')
+        switch_s = self.addSwitch('Switch Spesialis')
+        switch_r = self.addSwitch('Switch Residen')
 
         self.addLink(switch_k, router_rs, intfName1 = 's1-eth1', intfName2='r0-eth1', params2={'ip':default_gateway_koas})
         self.addLink(switch_i, router_rs, intfName1 = 's2-eth1', intfName2='r0-eth2', params2={'ip':default_gateway_internship})
