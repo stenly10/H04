@@ -81,8 +81,8 @@ topo = MyTopo()
 net = Mininet(topo=topo)
 
 
-net['r1'].cmd("ip route add default via 192.168.244.122")
-net['r2'].cmd("ip route add default via 192.168.244.121")
+net['r0'].cmd("ip route add default via 192.168.244.122")
+net['r1'].cmd("ip route add default via 192.168.244.121")
 
 net.start()
 CLI(net)
