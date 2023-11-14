@@ -49,7 +49,7 @@ class MyTopo( Topo ):
         self.addLink(switch_i, router_asrama, intfName2='r0-eth2', params2={'ip':default_gateway_internship})
         self.addLink(switch_s, router_rs, intfName2='r1-eth1', params2={'ip':default_gateway_spesialis})
         self.addLink(switch_r, router_rs, intfName2='r1-eth2', params2={'ip':default_gateway_residen})
-        self.addLink(router_asrama, router_rs, params1={'ip':asrama_rs}, params2={'ip':rs_asrama})
+        self.addLink(router_asrama, router_rs, intfName1 = 'r0-eth3', intfName2='r1-eth3', params1={'ip':asrama_rs}, params2={'ip':rs_asrama})
 
         for switch in ['s1', 's2', 's3', 's4']:
             if switch == 's1':
