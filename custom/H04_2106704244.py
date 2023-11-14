@@ -75,15 +75,14 @@ class MyTopo( Topo ):
                     ip_addr = f'192.168.244.{j+114}/28'
                     self.addHost(host_name, ip=ip_addr, defaultRoute=f'via {default_gateway_residen[:-3]}')
                     self.addLink(host_name, switch)
-        router_asrama.cmd("ip route add 192.168.244.96/28 via 192.168.244.122 dev r0-eth3")
-        router_asrama.cmd("ip route add 192.168.244.112/29 via 192.168.244.122 dev r0-eth3")
+        
 # topos = { 'mytopo': ( lambda: MyTopo() ) }
 topo = MyTopo()
 net = Mininet(topo=topo)
 
 
-# net['r0'].cmd("ip route add 192.168.244.96/28 via 192.168.244.122 dev r0-eth3")
-# net['r0'].cmd("ip route add 192.168.244.112/29 via 192.168.244.122 dev r0-eth3")
+net['r0'].cmd("ip route add 192.168.244.96/28 via 192.168.244.122 dev r0-eth3")
+net['r0'].cmd("ip route add 192.168.244.112/29 via 192.168.244.122 dev r0-eth3")
 net['r1'].cmd("ip route add 192.168.244.0/26 via 192.168.244.121 dev r1-eth3")
 net['r1'].cmd("ip route add 192.168.244.64/27 via 192.168.244.121 dev r1-eth3")
 
