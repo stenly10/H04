@@ -46,7 +46,7 @@ class MyTopo( Topo ):
         self.addLink(switch_i, router_rs, intfName2='r0-eth2', params2={'ip':default_gateway_internship})
         self.addLink(switch_s, router_asrama, intfName2='r1-eth1', params2={'ip':default_gateway_spesialis})
         self.addLink(switch_r, router_asrama, intfName2='r1-eth2', params2={'ip':default_gateway_residen})
-        self.addLink(router_asrama, router_rs)
+        # self.addLink(router_asrama, router_rs)
 
         for switch in ['Switch K', 'Switch I', 'Switch S', 'Switch R']:
             if switch == 'Switch K':
@@ -65,7 +65,7 @@ class MyTopo( Topo ):
                 for j in range(number_host_per_switch_1):
                     host_name = f'S{j+1}'
                     ip_addr = f'192.168.244.{j+98}/28'
-                    self.addHost(host_name, ip=ip_addr, defaultRoute=f'via {default_gateway_internship}')
+                    self.addHost(host_name, ip=ip_addr, defaultRoute=f'via {default_gateway_spesialis}')
                     self.addLink(host_name, switch)
             else:
                 for j in range(number_host_per_switch_2):
