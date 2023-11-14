@@ -81,10 +81,10 @@ topo = MyTopo()
 net = Mininet(topo=topo)
 
 
-net['r0'].cmd("ip route add 192.168.244.96/28 dev r0-eth3")
-net['r0'].cmd("ip route add 192.168.244.112/29 dev r0-eth3")
-net['r1'].cmd("ip route add 192.168.244.0/26 dev r1-eth3")
-net['r1'].cmd("ip route add 192.168.244.64/27 dev r1-eth3")
+net['r0'].cmd("ip route add 192.168.244.96/28 via 192.168.244.122 dev r0-eth3")
+net['r0'].cmd("ip route add 192.168.244.112/29 via 192.168.244.122 dev r0-eth3")
+net['r1'].cmd("ip route add 192.168.244.0/26 via 192.168.244.121 dev r1-eth3")
+net['r1'].cmd("ip route add 192.168.244.64/27 via 192.168.244.121 dev r1-eth3")
 
 net.start()
 CLI(net)
