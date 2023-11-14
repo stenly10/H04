@@ -33,8 +33,8 @@ class MyTopo( Topo ):
         default_gateway_spesialis = '192.168.244.97/28'
         default_gateway_residen = '192.168.244.113/29'
 
-        router_asrama = self.addNode('Router Asrama', cls=LinuxRouter, ip=None)
-        router_rs = self.addNode('Router RS', cls=LinuxRouter, ip=None)
+        router_asrama = self.addNode('r0', cls=LinuxRouter, ip=None)
+        router_rs = self.addNode('r1', cls=LinuxRouter, ip=None)
         
         asrama_rs = '192.168.244.121/30'
         rs_asrama = '192.168.244.122/30'
