@@ -52,19 +52,19 @@ class MyTopo( Topo ):
         self.addLink(router_asrama, router_rs, intfName1 = 'r0-eth3', intfName2='r1-eth3', params1={'ip':asrama_rs}, params2={'ip':rs_asrama})
 
         for switch in ['s1', 's2', 's3', 's4']:
-            if switch == 'Switch_K':
+            if switch == 's1':
                 for j in range(number_host_per_switch_1):
                     host_name = f'K{j+1}'
                     ip_addr = f'192.168.244.{j+2}/26'
                     self.addHost(host_name, ip=ip_addr, defaultRoute=f'via {default_gateway_koas}')
                     self.addLink(host_name, switch)
-            elif switch == 'Switch_I':
+            elif switch == 's2':
                 for j in range(number_host_per_switch_1):
                     host_name = f'I{j+1}'
                     ip_addr = f'192.168.244.{j+66}/27'
                     self.addHost(host_name, ip=ip_addr, defaultRoute=f'via {default_gateway_internship}')
                     self.addLink(host_name, switch)
-            elif switch == 'Switch_S':
+            elif switch == 's3':
                 for j in range(number_host_per_switch_1):
                     host_name = f'S{j+1}'
                     ip_addr = f'192.168.244.{j+98}/28'
