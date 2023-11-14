@@ -57,24 +57,24 @@ class MyTopo( Topo ):
                     host_name = f'K{j+1}'
                     ip_addr = f'192.168.244.{j+2}/26'
                     self.addHost(host_name, ip=ip_addr, defaultRoute=f'via {default_gateway_koas}')
-                    self.addLink(host_name, switch, intfName2 = f'{switch}-eth{j+2}')
+                    self.addLink(host_name, switch)
             elif switch == 's2':
                 for j in range(number_host_per_switch_1):
                     host_name = f'I{j+1}'
                     ip_addr = f'192.168.244.{j+66}/27'
                     self.addHost(host_name, ip=ip_addr, defaultRoute=f'via {default_gateway_internship}')
-                    self.addLink(host_name, switch, intfName2 = f'{switch}-eth{j+2}')
+                    self.addLink(host_name, switch)
             elif switch == 's3':
                 for j in range(number_host_per_switch_1):
                     host_name = f'S{j+1}'
                     ip_addr = f'192.168.244.{j+98}/28'
                     self.addHost(host_name, ip=ip_addr, defaultRoute=f'via {default_gateway_spesialis}')
-                    self.addLink(host_name, switch, intfName2 = f'{switch}-eth{j+2}')
+                    self.addLink(host_name, switch)
             else:
                 for j in range(number_host_per_switch_2):
                     host_name = f'R{j+1}'
                     ip_addr = f'192.168.244.{j+114}/28'
                     self.addHost(host_name, ip=ip_addr, defaultRoute=f'via {default_gateway_residen}')
-                    self.addLink(host_name, switch, intfName2 = f'{switch}-eth{j+2}')
+                    self.addLink(host_name, switch)
             
 topos = { 'mytopo': ( lambda: MyTopo() ) }
