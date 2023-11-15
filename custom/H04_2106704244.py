@@ -78,20 +78,16 @@ class MyTopo( Topo ):
         
 # topos = { 'mytopo': ( lambda: MyTopo() ) }
 
-def run():
-    topo = MyTopo()
-    net = Mininet(topo=topo)
+topo = MyTopo()
+net = Mininet(topo=topo)
 
 
-    net['Router Asrama'].cmd("ip route add 192.168.244.96/28 via 192.168.244.122 dev r0-eth3")
-    net['Router Asrama'].cmd("ip route add 192.168.244.112/29 via 192.168.244.122 dev r0-eth3")
-    net['Router RS'].cmd("ip route add 192.168.244.0/26 via 192.168.244.121 dev r1-eth3")
-    net['Router RS'].cmd("ip route add 192.168.244.64/27 via 192.168.244.121 dev r1-eth3")
+net['Router Asrama'].cmd("ip route add 192.168.244.96/28 via 192.168.244.122 dev r0-eth3")
+net['Router Asrama'].cmd("ip route add 192.168.244.112/29 via 192.168.244.122 dev r0-eth3")
+net['Router RS'].cmd("ip route add 192.168.244.0/26 via 192.168.244.121 dev r1-eth3")
+net['Router RS'].cmd("ip route add 192.168.244.64/27 via 192.168.244.121 dev r1-eth3")
 
 
-    net.start()
-    CLI(net)
-    net.stop()
-
-if __name__ == '__main__':
-    run()
+net.start()
+CLI(net)
+net.stop()
