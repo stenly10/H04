@@ -33,11 +33,13 @@ class MyTopo( Topo ):
         default_gateway_spesialis = '192.168.244.97/28'
         default_gateway_residen = '192.168.244.113/29'
 
-        router_asrama = self.addNode('Router Asrama', cls=LinuxRouter, ip=default_gateway_koas)
-        router_rs = self.addNode('Router RS', cls=LinuxRouter, ip=default_gateway_spesialis)
-        
         asrama_rs = '192.168.244.121/30'
         rs_asrama = '192.168.244.122/30'
+
+        router_asrama = self.addNode('Router Asrama', cls=LinuxRouter, ip=default_gateway_koas, defaultRoute=f'via {rs_asrama[:-3]}')
+        router_rs = self.addNode('Router RS', cls=LinuxRouter, ip=default_gateway_spesialis, defaultRoute=f'via {asrama_rs[:-3]}')
+        
+        
         
         switch_k = self.addSwitch('s1')
         switch_i = self.addSwitch('s2')
@@ -76,18 +78,4 @@ class MyTopo( Topo ):
                     self.addHost(host_name, ip=ip_addr, defaultRoute=f'via {default_gateway_residen[:-3]}')
                     self.addLink(host_name, switch)
         
-# topos = { 'mytopo': ( lambda: MyTopo() ) }
-
-topo = MyTopo()
-net = Mininet(topo=topo)
-
-
-net['Router Asrama'].cmd("ip route add 192.168.244.96/28 via 192.168.244.122 dev r0-eth3")
-net['Router Asrama'].cmd("ip route add 192.168.244.112/29 via 192.168.244.122 dev r0-eth3")
-net['Router RS'].cmd("ip route add 192.168.244.0/26 via 192.168.244.121 dev r1-eth3")
-net['Router RS'].cmd("ip route add 192.168.244.64/27 via 192.168.244.121 dev r1-eth3")
-
-
-net.start()
-CLI(net)
-net.stop()
+topos = { 'mytopo': ( lambda: MyTopo() ) }
