@@ -36,8 +36,8 @@ class MyTopo( Topo ):
         asrama_rs = '192.168.244.121/30'
         rs_asrama = '192.168.244.122/30'
 
-        router_asrama = self.addNode('Router Asrama', cls=LinuxRouter, ip=default_gateway_koas, defaultRoute=f'via {rs_asrama[:-3]}')
-        router_rs = self.addNode('Router RS', cls=LinuxRouter, ip=default_gateway_spesialis, defaultRoute=f'via {asrama_rs[:-3]}')
+        router_asrama = self.addNode('Router Asrama', cls=LinuxRouter, ip=default_gateway_koas)
+        router_rs = self.addNode('Router RS', cls=LinuxRouter, ip=default_gateway_spesialis)
         
         
         
