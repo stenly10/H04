@@ -1,75 +1,91 @@
+"""Custom topology example
+
+Two directly connected switches plus a host for each switch:
+
+   host --- switch --- switch --- host
+
+Adding the 'topos' dict with a key/value pair to generate our newly defined
+topology enables one to pass in '--topo=mytopo' from the command line.
+"""
+
 from mininet.topo import Topo
-from mininet.net import Mininet
 from mininet.node import Node
-from mininet.log import setLogLevel, info
+from mininet.net import Mininet
 from mininet.cli import CLI
 
-
 class LinuxRouter(Node):
+    "A Node with IP forwarding enabled."
+
     def config(self, **params):
         super(LinuxRouter, self).config(**params)
+        # Enable forwarding on the router
         self.cmd('sysctl net.ipv4.ip_forward=1')
-
+    
     def terminate(self):
         self.cmd('sysctl net.ipv4.ip_forward=0')
         super(LinuxRouter, self).terminate()
 
+class MyTopo( Topo ):
+    def build( self ):
 
-class NetworkTopo(Topo):
-    def build(self, **_opts):
-        # Add 2 routers in two different subnets
-        r1 = self.addHost('r1', cls=LinuxRouter, ip='10.0.0.1/24')
-        r2 = self.addHost('r2', cls=LinuxRouter, ip='10.1.0.1/24')
+        default_gateway_koas = '192.168.244.1/26'
+        default_gateway_internship = '192.168.244.65/27'
+        default_gateway_spesialis = '192.168.244.97/28'
+        default_gateway_residen = '192.168.244.113/29'
 
-        # Add 2 switches
-        s1 = self.addSwitch('s1')
-        s2 = self.addSwitch('s2')
+        router_asrama = self.addNode('r0', cls=LinuxRouter, ip=default_gateway_koas, defaultRoute=f"via {rs_asrama[-3]}")
+        router_rs = self.addNode('r1', cls=LinuxRouter, ip=default_gateway_spesialis, defaultRoute=f"via {asrama_rs[-3]}")
+        
+        asrama_rs = '192.168.244.121/30'
+        rs_asrama = '192.168.244.122/30'
+        
+        switch_k = self.addSwitch('s1')
+        switch_i = self.addSwitch('s2')
+        switch_s = self.addSwitch('s3')
+        switch_r = self.addSwitch('s4')
 
-        # Add host-switch links in the same subnet
-        self.addLink(s1,
-                     r1,
-                     intfName2='r1-eth1',
-                     params2={'ip': '10.0.0.1/24'})
+        self.addLink(switch_k, router_asrama, intfName2='r0-eth1', params2={'ip':default_gateway_koas})
+        self.addLink(switch_i, router_asrama, intfName2='r0-eth2', params2={'ip':default_gateway_internship})
+        self.addLink(switch_s, router_rs, intfName2='r1-eth1', params2={'ip':default_gateway_spesialis})
+        self.addLink(switch_r, router_rs, intfName2='r1-eth2', params2={'ip':default_gateway_residen})
+        self.addLink(router_asrama, router_rs, intfName1 = 'r0-eth3', intfName2='r1-eth3', params1={'ip':asrama_rs}, params2={'ip':rs_asrama})
 
-        self.addLink(s2,
-                     r2,
-                     intfName2='r2-eth1',
-                     params2={'ip': '10.1.0.1/24'})
-
-        # Add router-router link in a new subnet for the router-router connection
-        self.addLink(r1,
-                     r2,
-                     intfName1='r1-eth2',
-                     intfName2='r2-eth2',
-                     params1={'ip': '10.100.0.1/24'},
-                     params2={'ip': '10.100.0.2/24'})
-
-        # Adding hosts specifying the default route
-        d1 = self.addHost(name='d1',
-                          ip='10.0.0.251/24',
-                          defaultRoute='via 10.0.0.1')
-        d2 = self.addHost(name='d2',
-                          ip='10.1.0.252/24',
-                          defaultRoute='via 10.1.0.1')
-
-        # Add host-switch links
-        self.addLink(d1, s1)
-        self.addLink(d2, s2)
-
-
-def run():
-    topo = NetworkTopo()
-    net = Mininet(topo=topo)
-
-    # Add routing for reaching networks that aren't directly connected
-    info(net['r1'].cmd("ip route add 10.1.0.0/24 via 10.100.0.2 dev r1-eth2"))
-    info(net['r2'].cmd("ip route add 10.0.0.0/24 via 10.100.0.1 dev r2-eth2"))
-
-    net.start()
-    CLI(net)
-    net.stop()
+        for switch in ['s1', 's2', 's3', 's4']:
+            if switch == 's1':
+                for j in range(61):
+                    host_name = f'K{j+1}'
+                    ip_addr = f'192.168.244.{j+2}/26'
+                    self.addHost(host_name, ip=ip_addr, defaultRoute=f'via {default_gateway_koas[:-3]}')
+                    self.addLink(host_name, switch)
+            elif switch == 's2':
+                for j in range(29):
+                    host_name = f'I{j+1}'
+                    ip_addr = f'192.168.244.{j+66}/27'
+                    self.addHost(host_name, ip=ip_addr, defaultRoute=f'via {default_gateway_internship[:-3]}')
+                    self.addLink(host_name, switch)
+            elif switch == 's3':
+                for j in range(13):
+                    host_name = f'S{j+1}'
+                    ip_addr = f'192.168.244.{j+98}/28'
+                    self.addHost(host_name, ip=ip_addr, defaultRoute=f'via {default_gateway_spesialis[:-3]}')
+                    self.addLink(host_name, switch)
+            else:
+                for j in range(5):
+                    host_name = f'R{j+1}'
+                    ip_addr = f'192.168.244.{j+114}/28'
+                    self.addHost(host_name, ip=ip_addr, defaultRoute=f'via {default_gateway_residen[:-3]}')
+                    self.addLink(host_name, switch)
+        
+topos = { 'mytopo': ( lambda: MyTopo() ) }
+# topo = MyTopo()
+# net = Mininet(topo=topo)
 
 
-if __name__ == '__main__':
-    setLogLevel('info')
-    run()
+# net['r0'].cmd("ip route add 192.168.244.96/28 via 192.168.244.122 dev r0-eth3")
+# net['r0'].cmd("ip route add 192.168.244.112/29 via 192.168.244.122 dev r0-eth3")
+# net['r1'].cmd("ip route add 192.168.244.0/26 via 192.168.244.121 dev r1-eth3")
+# net['r1'].cmd("ip route add 192.168.244.64/27 via 192.168.244.121 dev r1-eth3")
+
+# net.start()
+# CLI(net)
+# net.stop()
